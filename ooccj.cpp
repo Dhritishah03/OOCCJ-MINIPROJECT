@@ -4,36 +4,36 @@
 #include <string.h>
 #include <unistd.h>
 using namespace std;
-  
+
 // Class ATM to get user details
 class atm{
 private:
     char username[30];
     int password;
     int balance;
-  
+
 public:
- 
-  atm(){
-      cout<<"Welcome to the ATM System";
-  }
-  
-  ~atm(){
-      cout<<"Thank you! Please visit again";
-  }
-    
+
+    atm(){
+        cout<<"Welcome to the ATM System";
+    }
+
+    ~atm(){
+        cout<<"Thank you! Please visit again";
+    }
+
     char* usernames(void)
     {
         // Return username
         return username;
     }
-  
+
     int passwords(void)
     {
         // Return the password
         return password;
     }
-  
+
     // Function to get the data
     void getData(void)
     {
@@ -41,24 +41,24 @@ public:
             numeric_limits<streamsize>::max(),
             '\n');
         cout << "\nEnter username:";
-  
+
         cin.getline(username, 30);
         cout << "\nEnter 4-digit "
              << "password:";
-  
+
         cin >> password;
         cin.ignore(
             numeric_limits<streamsize>::max(),
             '\n');
         cout << "\nEnter initial"
              << " balance:";
-  
+
         cin >> balance;
         cin.ignore(
             numeric_limits<streamsize>::max(),
             '\n');
     }
-  
+
     // Function displaying the data
     void showData(void)
     {
@@ -67,7 +67,7 @@ public:
              << ", Balance:" << balance
              << endl;
     }
-  
+
     // Member Functions
     int adduser();
     int viewallusers();
@@ -77,14 +77,14 @@ public:
     int searchspecificuser(char*, int);
     int searchallusertodisplay(char*);
 };
-  
+
 // Function to add user
 int atm::adduser()
 {
     atm a;
-  
+
     ofstream file;
-  
+
     // Open file in write mode
     file.open("aaa.txt",
               ios::out | ios::app);
@@ -93,43 +93,40 @@ int atm::adduser()
              << "file.." << endl;
         return 0;
     }
-  
+
     // Read from user
     a.getData();
-  
+
     // Write into file
-    file.write((char*)&a, sizeof(a));
-  
+    file << a.usernames() << " " << a.passwords() << " " << a.balance << endl;
+
     // Close the file
     file.close();
-  
+
     return 0;
 }
-  
+
 // View Users
 int atm::viewallusers()
 {
-  
+
     atm a;
-  
+
     ifstream file1;
-  
+
     // Open file in read mode
     file1.open("aaa.txt", ios::in);
     if (!file1) {
         cout << "Error in opening file..";
         return 0;
     }
-  
+
     // Read data from file
-    file1.read((char*)&a, sizeof(a));
-    while (!file1.eof()) {
-  
+    while (file1 >> a.username >> a.password >> a.balance) {
+
         // Display data on monitor
         a.showData();
-        file1.read((char*)&a, sizeof(a));
     }
-  
     // Close the file
     file1.close();
     return 0;
